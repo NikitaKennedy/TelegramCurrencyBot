@@ -2,7 +2,10 @@ import requests
 import json
 import config
 from extensions import APIException
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class Converter:
     @staticmethod
@@ -31,7 +34,9 @@ class Converter:
             raise APIException("Количество должно быть больше нуля")
         # Выполняем запрос API
         url = f"https://api.apilayer.com/currency_data/convert?to={quote}&from={base}&amount={amount}"
-        headers = {"apikey": f"{config.API_KEY}"}
+        # headers = {"apikey": f"{config.API_KEY}"} in res headers=headers os.getenv("API_KEY")
+        apikey = os.getenv("API_KEY")
+        headers = {"apikey": f"{apikey}"}
         payload = {}
         # Получаем ответ в формате json
         response = requests.get(url, headers=headers, data=payload)
